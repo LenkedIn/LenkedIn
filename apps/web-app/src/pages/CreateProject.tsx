@@ -1,10 +1,12 @@
 import styled from "styled-components"
 
 const PageContainer = styled.div`
-    display: flex;
+  display: flex;
 `
 
-const CreateProject = () => <PageContainer>
+const CreateProject = () => (
+  <PageContainer>
     <h1>Create Project</h1>
-    </PageContainer>
+  </PageContainer>
+)
 export default CreateProject
