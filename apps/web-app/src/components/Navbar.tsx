@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { Link, NavLink } from "react-router-dom"
+import Button from "./Button"
 
 const Logo = styled.div`
   display: inline-block;
@@ -16,6 +17,7 @@ const NavbarContainer = styled.div`
         display:flex;
         font-family: 'TitilliumWebSemiBold';
         font-size: 16px;
+        align-items: center;
     }
     li{
         margin-right: 30px;
@@ -54,7 +56,11 @@ const Navbar = () => (
           Create Profile
         </NavLink>
       </li>
-      <li>Connect Wallet</li>
+      <li>
+        <Button bgColor="--primary-green-lofi" textColor="black">
+          Connect Wallet
+        </Button>{" "}
+      </li>
     </ul>
   </NavbarContainer>
 )
