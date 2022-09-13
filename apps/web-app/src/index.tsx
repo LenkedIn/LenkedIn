@@ -6,6 +6,7 @@ import CreateProfile from "./pages/CreateProfile"
 import CreateProject from "./pages/CreateProject"
 import Navbar from "./components/Navbar"
 import Landing from "./pages/Landing"
+import Footer from "./components/Footer"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
@@ -19,6 +20,7 @@ root.render(
             <>
               <Navbar />
               <Landing />
+              <Footer />
             </>
           }
         />
@@ -28,6 +30,7 @@ root.render(
             <>
               <Navbar />
               <CreateProfile />
+              <Footer />
             </>
           }
         />
@@ -37,6 +40,7 @@ root.render(
             <>
               <Navbar />
               <CreateProject />
+              <Footer />
             </>
           }
         />
