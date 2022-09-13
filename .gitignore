@@ -1,7 +1,9 @@
+*/contracts/build
 */contracts/artifacts
 */contracts/cache
 */contracts/typechain-types
 
+.env
 .vscode
 node_modules
 .DS_Store
