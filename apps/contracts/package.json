@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "hardhat node & yarn compile && yarn deploy --network localhost",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:report-gas": "REPORT_GAS=true hardhat test",
+    "test:coverage": "hardhat coverage",
+    "typechain": "hardhat typechain",
+    "lint": "solhint 'contracts/**/*.sol'"
   },
   "keywords": [],
   "author": "",
@@ -25,12 +32,29 @@
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.16",
     "chai": "^4.3.6",
+    "dotenv": "^16.0.2",
     "ethers": "^5.7.0",
     "hardhat": "^2.11.1",
     "hardhat-gas-reporter": "^1.0.9",
+    "solhint": "^3.3.7",
+    "solhint-plugin-prettier": "^0.0.5",
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
     "typescript": "^4.8.3"
+  },
+  "config": {
+    "solidity": {
+      "version": "0.8.9"
+    },
+    "paths": {
+      "contracts": "./contracts",
+      "tests": "./test",
+      "cache": "./cache",
+      "build": {
+        "contracts": "./build/contracts",
+        "typechain": "./build/typechain"
+      }
+    }
   }
 }

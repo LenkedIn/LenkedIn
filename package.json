@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "start:web-app": "yarn workspace web-app start",
+    "start:contracts": "yarn workspace contracts start",
     "lint": "eslint ./",
     "lint-fix": "yarn prettier --write ./ && eslint --fix ./"
   },
