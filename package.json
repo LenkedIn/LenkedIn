@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "start:web-app": "yarn workspace web-app start",
+    "start:backend": "yarn workspace backend start",
     "lint": "eslint ./",
     "lint-fix": "yarn prettier --write ./ && eslint --fix ./"
   },
@@ -25,5 +26,8 @@
     "eslint-plugin-react": "^7.31.7",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7"
   }
 }
