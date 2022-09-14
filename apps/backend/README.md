@@ -1,4 +1,13 @@
-# edit .env
+# .env docs
+all param will be available on lambda functions by calling `process.env.{param_name}`
+
+| Params          | description |
+| --------------- |:-------------:|
+| DYNAMODB_TABLE  | table name of dynamoDB     |
+| ALCHEMY_API_KEY | api key of alchemy     |
+| REGION          | AWS region of function been deployed to     |
+| AWS_PROFILE     | AWS profile name(default is `default`)     |
+
 
 # configure AWS credentials
 
@@ -9,27 +18,13 @@ serverless config credentials \
   --secret wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
-# compiling
 
-You can compile the ts files in this directory by 1st installing typescript via
+# Usage
 
-`npm install -g typescript`
+- invoke function locally
 
-then
-
-`npm i`
-
-You can then run the compiler by running `tsc` in this directory. It will pull the settings from .tsconfig and extra @types
-from package.json. The output create.js file is what will be uploaded by serverless.
-
-lastly, install plugins:
-`serverless plugin install -n serverless-dotenv-plugin`
-`serverless plugin install -n serverless-plugin-typescript`
-
-## Usage
-
-invoke function locally
 `serverless invoke local --function {function_name}`
 
-deploy to AWS(cloudformationm dynamoDB and functions)
+- deploy to AWS(cloudformationm dynamoDB and functions)
+
 `serverless`
