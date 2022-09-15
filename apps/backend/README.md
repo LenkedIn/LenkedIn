@@ -1,3 +1,14 @@
+# Serverless framwork introduction
+
+[Introduction Website](https://www.serverless.com/)
+
+[Official docs](https://www.serverless.com/framework/docs)
+
+[Examples](https://github.com/serverless/examples)
+
+
+
+
 # .env docs
 all param will be available on lambda functions by calling `process.env.{param_name}`
 
