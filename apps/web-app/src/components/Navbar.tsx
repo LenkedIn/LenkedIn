@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { Link, NavLink } from "react-router-dom"
 import Button from "./Button"
+import { useWeb3 } from "../context/Web3Context"
 
 const Logo = styled.div`
   display: inline-block;
@@ -38,31 +39,39 @@ const isCurrentPage = (path: string): string => {
   return String(window.location).includes(path) ? "current-page" : ""
 }
 
-const Navbar = () => (
-  <NavbarContainer>
-    <Logo>
-      <Link style={{ textDecoration: "none", color: "black" }} to={{ pathname: "/" }}>
-        <h1>LENKEDin</h1>
-      </Link>
-    </Logo>
-    <ul>
-      <li>
-        <NavLink to={{ pathname: "/create-project" }} className={isCurrentPage("/create-project")}>
-          Create Project
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to={{ pathname: "/create-profile" }} className={isCurrentPage("/create-profile")}>
-          Create Profile
-        </NavLink>
-      </li>
-      <li>
-        <Button bgColor="--primary-green-lofi" textColor="black">
-          Connect Wallet
-        </Button>{" "}
-      </li>
-    </ul>
-  </NavbarContainer>
-)
-
+const Navbar = () => {
+  const { connectWallet } = useWeb3()
+  return (
+    <NavbarContainer>
+      <Logo>
+        <Link style={{ textDecoration: "none", color: "black" }} to={{ pathname: "/" }}>
+          <h1>LENKEDin</h1>
+        </Link>
+      </Logo>
+      <ul>
+        <li>
+          <NavLink
+            to={{ pathname: "/create-project" }}
+            className={isCurrentPage("/create-project")}
+          >
+            Create Project
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={{ pathname: "/create-profile" }}
+            className={isCurrentPage("/create-profile")}
+          >
+            Create Profile
+          </NavLink>
+        </li>
+        <li>
+          <Button bgColor="--primary-green-lofi" textColor="black" onClick={() => connectWallet()}>
+            Connect Wallet
+          </Button>
+        </li>
+      </ul>
+    </NavbarContainer>
+  )
+}
 export default Navbar

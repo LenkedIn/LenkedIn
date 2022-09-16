@@ -1,11 +1,11 @@
 import styled from "styled-components"
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   bgColor?: string
   textColor?: string
 }
 
-const Button = styled.button<Props>`
+const StyledButton = styled.button<Props>`
   background-color: var(${p => p.bgColor});
   color: ${p => p.textColor};
   font-family: "TitilliumWebSemiBold";
@@ -18,6 +18,8 @@ const Button = styled.button<Props>`
     cursor: pointer;
   }
 `
+
+const Button = ({ children, ...props }: Props) => <StyledButton {...props}>{children}</StyledButton>
 
 Button.defaultProps = {
   bgColor: "--primary-green-dark",
