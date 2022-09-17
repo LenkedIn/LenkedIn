@@ -24,20 +24,12 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource: 
+          Resource:
             - "arn:aws:dynamodb:${aws:region}:*:table/${env:PROFILE_DYNAMODB_TABLE_NAME}"
             - "arn:aws:dynamodb:${aws:region}:*:table/${env:PROJECT_DYNAMODB_TABLE_NAME}"
 
 functions:
   # Profile API
-  create_profile:
-    name: ${self:service}-profile-create_profile
-    handler: profile_page_api/create_profile.create_profile
-    events:
-      - httpApi:
-          path: /profile/create
-          method: post
-
   update_profile:
     name: ${self:service}-profile-update_profile
     handler: profile_page_api/update_profile.update_profile
@@ -45,7 +37,6 @@ functions:
       - httpApi:
           path: /profile/update
           method: post
-
 
   # Project API
   create_project:
@@ -97,7 +88,6 @@ functions:
           path: /metadata/review/{token_id}
           method: get
 
-
 resources:
   Resources:
     # DB scheme
@@ -106,19 +96,19 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: idCommitment
+          - AttributeName: idcommitment
             AttributeType: S
           - AttributeName: group_id
-            AttributeType: S
+            AttributeType: N
         KeySchema:
-          - AttributeName: idCommitment
+          - AttributeName: idcommitment
             KeyType: HASH
         GlobalSecondaryIndexes:
           - IndexName: by_group_id
-            KeySchema: 
+            KeySchema:
               - AttributeName: group_id
                 KeyType: HASH
-            Projection: 
+            Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
         TableName: ${env:PROFILE_DYNAMODB_TABLE_NAME}
@@ -137,10 +127,10 @@ resources:
             KeyType: HASH
         GlobalSecondaryIndexes:
           - IndexName: by_invitation_code
-            KeySchema: 
+            KeySchema:
               - AttributeName: invitation_code
                 KeyType: HASH
-            Projection: 
+            Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
         TableName: ${env:PROJECT_DYNAMODB_TABLE_NAME}

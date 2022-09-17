@@ -6,7 +6,7 @@ import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
 import { ethers } from "ethers"
 
-export const create_profile = async (
+export const update_profile = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   console.log(event)
