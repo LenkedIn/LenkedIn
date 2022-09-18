@@ -21,7 +21,7 @@ const NavbarContainer = styled.div`
         align-items: center;
     }
     li{
-        margin-right: 30px;
+        margin-left: 30px;
         a{
             text-decoration: none;
             color: black;
