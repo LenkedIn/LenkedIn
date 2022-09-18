@@ -38,6 +38,10 @@ const ProfileFormSchema = Yup.object().shape({
   purpose: Yup.string().default(""),
 })
 
+const loadLENSProfile = () => {
+  console.log("log lens profile")
+}
+
 const CreateProfile = () => {
   const { web3Info } = useWeb3()
 
@@ -62,6 +66,15 @@ const CreateProfile = () => {
         }}
       >
         <Form>
+          <Button
+            style={{ width: "30%", marginRight: "auto" }}
+            type="button"
+            onClick={() => {
+              loadLENSProfile()
+            }}
+          >
+            Import LENS profile binded with the address
+          </Button>
           <DoubleFieldsContainer>
             <TextField label="Name" name="name" placeholder="Bubu" />
             <TextField label="Github Handle" name="gitHandle" />
