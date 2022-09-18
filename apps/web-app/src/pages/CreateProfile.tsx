@@ -67,7 +67,7 @@ const CreateProfile = () => {
       >
         <Form>
           <Button
-            style={{ width: "30%", marginRight: "auto" }}
+            style={{ width: "30%", marginRight: "auto", marginBottom: "20px" }}
             type="button"
             onClick={() => {
               loadLENSProfile()
