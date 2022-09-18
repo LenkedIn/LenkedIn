@@ -47,19 +47,14 @@ const CreateProject = () => {
         }}
       >
         <Form>
-          <TextField
-            label="Project Name"
-            name="projectName"
-            placeholder="Project Apollo"
-            as="input"
-          />
-          <TextField label="Github Repository" name="gitRepo" as="input" />
-          <TextField label="Project Image Link" name="projectIconLink" as="input" />
+          <TextField label="Project Name" name="projectName" placeholder="Project Apollo" />
+          <TextField label="Github Repository" name="gitRepo" />
+          <TextField label="Project Image Link" name="projectIconLink" />
           <TextField
             label="Project Description"
             name="projectDescription"
             placeholder="Best project ever"
-            as="textarea"
+            component="textarea"
           />
           <Button style={{ width: "30%", marginLeft: "auto" }} type="submit">
             Save and Generate Invitation Code

@@ -63,32 +63,32 @@ const CreateProfile = () => {
       >
         <Form>
           <DoubleFieldsContainer>
-            <TextField label="Name" name="name" placeholder="Bubu" as="input" />
-            <TextField label="Github Handle" name="gitHandle" as="input" />
+            <TextField label="Name" name="name" placeholder="Bubu" />
+            <TextField label="Github Handle" name="gitHandle" />
           </DoubleFieldsContainer>
 
           <DoubleFieldsContainer>
-            <TextField label="Discord" name="discord" placeholder="Bubu#1000" as="input" />
-            <TextField label="Twitter" name="twitter" as="input" />
+            <TextField label="Discord" name="discord" placeholder="Bubu#1000" />
+            <TextField label="Twitter" name="twitter" />
           </DoubleFieldsContainer>
 
-          <TextField label="Profile Image Link" name="profileIconLink" as="input" />
+          <TextField label="Profile Image Link" name="profileIconLink" />
           <TextField
             label="Introduce yourself"
             name="introduction"
             placeholder="Best person ever"
-            as="textarea"
+            component="textarea"
           />
           <TextField
             label="What are your skill sets"
             name="skillSet"
             placeholder="Best power ever"
-            as="textarea"
+            component="textarea"
           />
           <TextField
             label="Tell us about your professional background"
             name="backGround"
-            as="textarea"
+            component="textarea"
           />
           <Button style={{ width: "30%", marginLeft: "auto" }} type="submit">
             Save
