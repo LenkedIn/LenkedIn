@@ -4,7 +4,7 @@ import { Field as FField, FieldConfig } from "formik"
 const FieldLabelContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
   margin-bottom: 20px;
 `
 
