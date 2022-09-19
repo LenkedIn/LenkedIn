@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.9;
 
+import "./interfaces/IProjectInfo.sol"
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/IVerifier.sol";
@@ -10,9 +11,12 @@ import "@semaphore-protocol/contracts/base/SemaphoreGroups.sol";
 error InvalidTreeDepth();
 
 contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
+    
     uint8 internal constant MAX_DEPTH = 32;
 
-    mapping(uint256 => EnumerableSet.UintSet) internal groupsJoined;
+    uint256 internal _projectCount;
+    mapping(uint256 => Project) public projectInfo;
+    mapping(uint256 => EnumerableSet.UintSet) public groupsJoined;
 
     constructor() 
     {
@@ -27,16 +31,19 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     }
 
     function createProject(
-        uint256 groupId,
         uint8 depth,
         uint256 zeroValue,
-        uint256 identityCommitment
+        uint256 identityCommitmentHash
     ) 
         external
         onlySupportedDepth(depth)
+        returns(_projectCount)
     {
-        _createGroup(groupId, depth, zeroValue);
-        groupsJoined[identityCommitment].add(groupId);
+        _createGroup(_projectCount, depth, zeroValue);
+        _addMember(_projectCount, uint256(identityCommitmentHash));
+        projectInfo[_projectCount] = Project(block.timestamp, 0, "", "", "", "");
+        groupsJoined[identityCommitmentHash].add(_projectCount);
+        _projectCount++;
     }
 
     function addMember(
@@ -45,7 +52,7 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     ) 
         external
     {
-        _addMember(groupId, identityCommitment);
+        _addMember(groupId, uint256(identityCommitmentHash));
         groupsJoined[identityCommitment].add(groupId);
     }
 
@@ -64,6 +71,14 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
         external
     {
 
+    }
+
+    function getProjectCount()
+        external
+        view
+        returns(uint256 projectCount)
+    {
+        return _projectCount;
     }
 
     function getProjectsByIDCommitment(uint256 idCommitment)
@@ -97,7 +112,13 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
 
     }
 
-    function lensConnect()
+    function setLensConnect()
+        external
+    {
+
+    }
+
+    function getLensConnect()
         external
     {
 
