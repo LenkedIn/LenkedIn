@@ -11,6 +11,7 @@
     "start:web-app": "yarn workspace web-app start",
     "start:contracts": "yarn workspace contracts start",
     "build:web-app": "yarn workspace web-app build",
+    "start:backend": "yarn workspace backend start",
     "lint": "eslint ./",
     "lint-fix": "yarn prettier --write ./ && eslint --fix ./"
   },
