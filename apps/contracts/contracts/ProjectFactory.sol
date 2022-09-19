@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.9;
 
-import "./interfaces/IProjectInfo.sol"
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "./libraries/DataTypes.sol";
+
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/IVerifier.sol";
 import "@semaphore-protocol/contracts/base/SemaphoreCore.sol";
@@ -15,10 +15,10 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     uint8 internal constant MAX_DEPTH = 32;
 
     uint256 internal _projectCount;
+    mapping(uint256 => Profile) public profileInfo;
     mapping(uint256 => Project) public projectInfo;
-    mapping(uint256 => EnumerableSet.UintSet) public groupsJoined;
 
-    constructor() 
+    constructor(address _verifier) 
     {
 
     }
@@ -33,16 +33,16 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     function createProject(
         uint8 depth,
         uint256 zeroValue,
-        uint256 identityCommitmentHash
+        uint256 identityCommitment
     ) 
         external
         onlySupportedDepth(depth)
         returns(_projectCount)
     {
         _createGroup(_projectCount, depth, zeroValue);
-        _addMember(_projectCount, uint256(identityCommitmentHash));
+        _addMember(_projectCount, identityCommitmentHash);
         projectInfo[_projectCount] = Project(block.timestamp, 0, "", "", "", "");
-        groupsJoined[identityCommitmentHash].add(_projectCount);
+        profileInfo[identityCommitment].ongoingProject.add(_projectCount);
         _projectCount++;
     }
 
@@ -52,8 +52,8 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     ) 
         external
     {
-        _addMember(groupId, uint256(identityCommitmentHash));
-        groupsJoined[identityCommitment].add(groupId);
+        _addMember(groupId, identityCommitment);
+        profileInfo[identityCommitment].ongoingProject.add(groupId);
     }
 
     function removeMember(
@@ -64,7 +64,8 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     ) 
         external
     {
-
+        _removeMember(groupId, identityCommitment);
+        profileInfo[identityCommitment].ongoingProject.remove(groupId);
     }
 
     function endProject(uint256 groupId) 
@@ -112,15 +113,20 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
 
     }
 
-    function setLensConnect()
+    function setLensConnect(
+        uint256 idCommitment,
+        string lensProfile
+    )
         external
     {
-
+        profileInfo[idCommitment].lensProfile = lensProfile;
     }
 
-    function getLensConnect()
+    function getLensConnect(uint256 idCommitment)
         external
+        view
+        returns(string lensProfile)
     {
-
+        return profileInfo[idCommitment].lensProfile = lensProfile;
     }
 }
