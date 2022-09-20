@@ -21,7 +21,7 @@ const NavbarContainer = styled.div`
         align-items: center;
     }
     li{
-        margin-right: 30px;
+        margin-left: 30px;
         a{
             text-decoration: none;
             color: black;
@@ -40,7 +40,7 @@ const isCurrentPage = (path: string): string => {
 }
 
 const Navbar = () => {
-  const { connectWallet } = useWeb3()
+  const { connectWallet, web3Info } = useWeb3()
   return (
     <NavbarContainer>
       <Logo>
@@ -67,7 +67,7 @@ const Navbar = () => {
         </li>
         <li>
           <Button bgColor="--primary-green-lofi" textColor="black" onClick={() => connectWallet()}>
-            Connect Wallet
+            {web3Info?.account ? web3Info.account.substr(0, 10) + "..." : "Connect Wallet"}
           </Button>
         </li>
       </ul>
