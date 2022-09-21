@@ -5,6 +5,7 @@ import Button from "../components/Button"
 import { Formik, Form } from "formik"
 import TextField from "../components/TextField"
 import * as Yup from "yup"
+import { createProfile, getAccessToken } from "../api/lens"
 
 const PageContainer = styled.div`
   display: flex;
@@ -38,11 +39,23 @@ const ProfileFormSchema = Yup.object().shape({
   purpose: Yup.string().default(""),
 })
 
+export type profileFormInterface = {
+  name: string
+  gitHandle: string
+  discord: string
+  twitter: string
+  profileIconLink: string
+  introduction: string
+  skillSet: string
+  backGround: string
+  purpose: string
+}
+
 const loadLENSProfile = () => {
   console.log("log lens profile")
 }
 
-const CreateProfile = () => {
+export const CreateProfile = () => {
   const { web3Info } = useWeb3()
 
   useEffect(() => {
@@ -59,10 +72,12 @@ const CreateProfile = () => {
       <Formik
         initialValues={ProfileFormSchema.getDefault()}
         validationSchema={ProfileFormSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={async (values, actions) => {
           console.log("submit")
           console.log(values)
           actions.setSubmitting(false)
+          await getAccessToken()
+          await createProfile(values)
         }}
       >
         <Form>
@@ -111,4 +126,3 @@ const CreateProfile = () => {
     </PageContainer>
   )
 }
-export default CreateProfile

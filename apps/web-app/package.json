@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@metamask/providers": "^9.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -11,7 +12,9 @@
     "@types/node": "^16.11.58",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "ethers": "^5.7.1",
     "formik": "^2.2.9",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
