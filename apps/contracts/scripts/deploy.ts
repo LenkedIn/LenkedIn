@@ -5,6 +5,11 @@ async function main() {
   const Project = await ethers.getContractFactory("Project")
   const Review = await ethers.getContractFactory("Review")
   const ProjectManager = await ethers.getContractFactory("ProjectManager")
+  const Verifier16 = await ethers.getContractFactory("Verifier16")
+
+  const verifier = await Verifier16.deploy()
+  await verifier.deployed()
+  console.log(`Verifier16 deployed to ${verifier.address}`)
 
   const projectFactory = await ProjectFactory.deploy()
   await projectFactory.deployed()

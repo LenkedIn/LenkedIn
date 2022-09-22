@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.9;
+pragma solidity 0.8.4;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
@@ -14,8 +14,10 @@ library DataTypes {
         uint256 startTime;
         uint256 endTime;
         string projectName;
-        string GithubRepository;
-        string ProjectImageLink;
-        string ProjectDescription;
+        string githubRepository;
+        string projectImageLink;
+        string projectDescription;
+        EnumerableSet.UintSet members;
+        EnumerableSet.UintSet reviewRecords;
     }
 }
