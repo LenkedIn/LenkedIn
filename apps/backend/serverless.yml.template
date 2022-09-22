@@ -1,0 +1,140 @@
+service: lenkedin
+frameworkVersion: "3"
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  # stage: dev
+  region: ${env:REGION}
+  profile: ${env:AWS_PROFILE} # profile of your aws credentials
+  memorySize: 512 # optional, in MB, default is 1024
+  timeout: 29 # optional, in seconds, default is 6
+  environment:
+  httpApi:
+    cors: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${aws:region}:*:table/${env:PROFILE_DYNAMODB_TABLE_NAME}"
+            - "arn:aws:dynamodb:${aws:region}:*:table/${env:PROJECT_DYNAMODB_TABLE_NAME}"
+
+functions:
+  # Profile API
+  update_profile:
+    name: ${self:service}-profile-update_profile
+    handler: profile_page_api/update_profile.update_profile
+    events:
+      - httpApi:
+          path: /profile/update
+          method: post
+
+  # Project API
+  create_project:
+    name: ${self:service}-project-create_project
+    handler: project_page_api/create_project.create_project
+    events:
+      - httpApi:
+          path: /project/create
+          method: post
+
+  end_project:
+    name: ${self:service}-project-end_project
+    handler: project_page_api/end_project.end_project
+    events:
+      - httpApi:
+          path: /project/end_project
+          method: post
+
+  add_member:
+    name: ${self:service}-project-add_member
+    handler: project_page_api/add_member.add_member
+    events:
+      - httpApi:
+          path: /project/add_member
+          method: post
+
+  remove_member:
+    name: ${self:service}-project-remove_member
+    handler: project_page_api/remove_member.remove_member
+    events:
+      - httpApi:
+          path: /project/remove_member
+          method: post
+
+  # Metadata API
+  project_NFT_metadata:
+    name: ${self:service}-metadata-project_NFT
+    handler: metadata_api/project_NFT.project_NFT
+    events:
+      - httpApi:
+          path: /metadata/project/{token_id}
+          method: get
+
+  review_NFT_metadata:
+    name: ${self:service}-metadata-review_NFT
+    handler: metadata_api/review_NFT.review_NFT
+    events:
+      - httpApi:
+          path: /metadata/review/{token_id}
+          method: get
+
+resources:
+  Resources:
+    # DB scheme
+    LenkedinProfile:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: idcommitment
+            AttributeType: S
+          - AttributeName: group_id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: idcommitment
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: by_group_id
+            KeySchema:
+              - AttributeName: group_id
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${env:PROFILE_DYNAMODB_TABLE_NAME}
+
+    LenkedinProject:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: group_id
+            AttributeType: N
+          - AttributeName: invitation_code
+            AttributeType: S
+        KeySchema:
+          - AttributeName: group_id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: by_invitation_code
+            KeySchema:
+              - AttributeName: invitation_code
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${env:PROJECT_DYNAMODB_TABLE_NAME}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
