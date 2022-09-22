@@ -5,7 +5,7 @@ import Button from "../components/Button"
 import { Formik, Form } from "formik"
 import TextField from "../components/TextField"
 import * as Yup from "yup"
-import { createProfile, getAccessToken } from "../api/lens"
+import { createProfile } from "../api/lens"
 
 const PageContainer = styled.div`
   display: flex;
@@ -73,55 +73,58 @@ export const CreateProfile = () => {
         initialValues={ProfileFormSchema.getDefault()}
         validationSchema={ProfileFormSchema}
         onSubmit={async (values, actions) => {
-          console.log("submit")
-          console.log(values)
           actions.setSubmitting(false)
-          await getAccessToken()
           await createProfile(values)
         }}
       >
-        <Form>
-          <Button
-            style={{ width: "30%", marginRight: "auto", marginBottom: "20px" }}
-            type="button"
-            onClick={() => {
-              loadLENSProfile()
-            }}
-          >
-            Import LENS profile binded with the address
-          </Button>
-          <DoubleFieldsContainer>
-            <TextField label="Name" name="name" placeholder="Bubu" />
-            <TextField label="Github Handle" name="gitHandle" />
-          </DoubleFieldsContainer>
+        {props => (
+          <Form>
+            <Button
+              style={{ width: "30%", marginRight: "auto", marginBottom: "20px" }}
+              type="button"
+              onClick={() => {
+                loadLENSProfile()
+              }}
+            >
+              Import LENS profile binded with the address
+            </Button>
+            <DoubleFieldsContainer>
+              <TextField label="Name" name="name" placeholder="Bubu" />
+              <TextField label="Github Handle" name="gitHandle" />
+            </DoubleFieldsContainer>
 
-          <DoubleFieldsContainer>
-            <TextField label="Discord" name="discord" placeholder="Bubu#1000" />
-            <TextField label="Twitter" name="twitter" />
-          </DoubleFieldsContainer>
+            <DoubleFieldsContainer>
+              <TextField label="Discord" name="discord" placeholder="Bubu#1000" />
+              <TextField label="Twitter" name="twitter" />
+            </DoubleFieldsContainer>
 
-          <TextField label="Profile Image Link" name="profileIconLink" />
-          <TextField
-            label="Introduce yourself"
-            name="introduction"
-            placeholder="Best person ever"
-            component="textarea"
-          />
-          <TextField
-            label="What are your skill sets"
-            name="skillSet"
-            placeholder="Best power ever"
-            component="textarea"
-          />
-          <TextField
-            label="Tell us about your professional background"
-            name="backGround"
-            component="textarea"
-          />
-          <Button style={{ width: "30%", marginLeft: "auto" }} type="submit">
-            Save
-          </Button>
-        </Form>
+            <TextField label="Profile Image Link" name="profileIconLink" />
+            <TextField
+              label="Introduce yourself"
+              name="introduction"
+              placeholder="Best person ever"
+              component="textarea"
+            />
+            <TextField
+              label="What are your skill sets"
+              name="skillSet"
+              placeholder="Best power ever"
+              component="textarea"
+            />
+            <TextField
+              label="Tell us about your professional background"
+              name="backGround"
+              component="textarea"
+            />
+            <Button
+              style={{ width: "30%", marginLeft: "auto" }}
+              type="submit"
+              disabled={!props.dirty}
+            >
+              Save
+            </Button>
+          </Form>
+        )}
       </Formik>
     </PageContainer>
   )

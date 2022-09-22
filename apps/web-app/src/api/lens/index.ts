@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 import { ApolloClient, InMemoryCache } from "@apollo/client"
-import { GET_CHALLENGE } from "./query"
+import { GET_CHALLENGE, GET_DEFAULT_PROFILES } from "./query"
 import { AUTHENTICATION, CREATE_PROFILE, REFRESH_AUTHENTICATION } from "./mutate"
 import { ethers } from "ethers"
 import { LOCAL_STORAGE_KEY } from "../../constant"
@@ -42,30 +42,6 @@ export const authenticate = async (address: string, signature: string) => {
   return result
 }
 
-export const createProfile = async (form: profileFormInterface) => {
-  try {
-    console.log("getting authenticating client...")
-    const authenticatedClient = await getAuthenticatedClient()
-    console.log("creating profile...")
-    console.log("form data", form)
-    const result = await authenticatedClient.mutate({
-      mutation: gql(CREATE_PROFILE),
-      variables: {
-        request: {
-          handle: form.name,
-          profilePictureUri: form.profileIconLink || null,
-          followModule: {
-            freeFollowModule: true,
-          },
-        },
-      },
-    })
-    console.log(result)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export const refreshAuth = async (refreshToken: string) => {
   const response = await apolloClient.mutate({
     mutation: gql(REFRESH_AUTHENTICATION),
@@ -102,7 +78,7 @@ export const getAccessToken = async () => {
 export const getAuthenticatedClient = async () => {
   // refresh credential
   if (!localStorage.getItem(LOCAL_STORAGE_KEY.LENS_REFRESH_TOKEN)) {
-    throw Error("no refresh token")
+    await getAccessToken()
   }
 
   await refreshAuth(localStorage.getItem(LOCAL_STORAGE_KEY.LENS_REFRESH_TOKEN) as string)
@@ -117,4 +93,45 @@ export const getAuthenticatedClient = async () => {
     },
   })
   return authenticatedClient
+}
+
+export const createProfile = async (form: profileFormInterface) => {
+  try {
+    console.log("getting authenticated client...")
+    const authenticatedClient = await getAuthenticatedClient()
+    console.log("creating profile...")
+    console.log("form data", form)
+    const result = await authenticatedClient.mutate({
+      mutation: gql(CREATE_PROFILE),
+      variables: {
+        request: {
+          handle: form.name,
+          profilePictureUri: form.profileIconLink || null,
+          followModule: {
+            freeFollowModule: true,
+          },
+        },
+      },
+    })
+    console.log(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getDefaultProfile = async (ethereumAddress: string | undefined) => {
+  try {
+    console.log("getting info of", ethereumAddress)
+    const result = await apolloClient.query({
+      query: gql(GET_DEFAULT_PROFILES),
+      variables: {
+        request: {
+          ethereumAddress,
+        },
+      },
+    })
+    return result
+  } catch (err) {
+    console.log(err)
+  }
 }
