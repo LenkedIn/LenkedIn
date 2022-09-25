@@ -51,6 +51,9 @@ h3{
   font-family: 'TitilliumWebRegular';
   font-size: 24px;
 }
+b{
+  font-family: 'TitilliumWebSemiBold';
+}
 `
 
 export default GlobalStyle
