@@ -6,6 +6,8 @@ import { Group } from "@semaphore-protocol/group"
 import { generateProof } from "@semaphore-protocol/proof"
 import { ethers } from "ethers"
 import {v4 as uuidv4} from 'uuid';
+import PROJECT_FACTORY_ABI from "../abi/project_factory.json"
+
 
 
 function is_valid(value: any): boolean {
@@ -44,10 +46,10 @@ export const create_project = async (
   }
 
   // init blockchain network provider
-  const network = process.env.BLOCK_CHAIN_NETWORK;
-  const provider = ethers.getDefaultProvider(network, {
-    alchemy: process.env.ALCHEMY_API_KEY,
-  });
+  const provider = new ethers.providers.AlchemyProvider(
+    process.env.BLOCK_CHAIN_NETWORK,
+    process.env.ALCHEMY_API_KEY,
+  );
 
   // init relayer 
   const relayer_wallet = new ethers.Wallet(process.env.RELAYER_PRIVATE_KEY);
@@ -56,8 +58,7 @@ export const create_project = async (
 
   // init contract
   const address = process.env.CONTRACT_ADDR;
-  const abi = [ { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [], "name": "InvalidTime", "type": "error" }, { "inputs": [], "name": "InvalidTreeDepth", "type": "error" }, { "inputs": [], "name": "Semaphore__GroupAlreadyExists", "type": "error" }, { "inputs": [], "name": "Semaphore__GroupDoesNotExist", "type": "error" }, { "inputs": [], "name": "Semaphore__GroupIdIsNotLessThanSnarkScalarField", "type": "error" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "merkleTreeDepth", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "zeroValue", "type": "uint256" } ], "name": "GroupCreated", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "identityCommitment", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "merkleTreeRoot", "type": "uint256" } ], "name": "MemberAdded", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "identityCommitment", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "merkleTreeRoot", "type": "uint256" } ], "name": "MemberRemoved", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "identityCommitment", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "newIdentityCommitment", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "merkleTreeRoot", "type": "uint256" } ], "name": "MemberUpdated", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "nullifierHash", "type": "uint256" } ], "name": "NullifierHashAdded", "type": "event" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "internalType": "uint256", "name": "identityCommitment", "type": "uint256" } ], "name": "addMember", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "claimReviews", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint8", "name": "depth", "type": "uint8" }, { "internalType": "uint256", "name": "zeroValue", "type": "uint256" }, { "internalType": "uint256", "name": "identityCommitment", "type": "uint256" } ], "name": "createProject", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "internalType": "string", "name": "projectName", "type": "string" }, { "internalType": "string", "name": "githubRepository", "type": "string" }, { "internalType": "string", "name": "projectImageLink", "type": "string" }, { "internalType": "string", "name": "projectDescription", "type": "string" } ], "name": "editProjectInfo", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" } ], "name": "endProject", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "idCommitment", "type": "uint256" } ], "name": "getLeafByIDCommitment", "outputs": [ { "internalType": "uint256[]", "name": "projectList", "type": "uint256[]" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "idCommitment", "type": "uint256" } ], "name": "getLensConnect", "outputs": [ { "internalType": "string", "name": "_lensProfile", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" } ], "name": "getMerkleTreeDepth", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" } ], "name": "getMerkleTreeRoot", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" } ], "name": "getNumberOfMerkleTreeLeaves", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "idCommitment", "type": "uint256" } ], "name": "getOngoingProjectsByIDCommitment", "outputs": [ { "internalType": "uint256[]", "name": "projectList", "type": "uint256[]" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getProjectCount", "outputs": [ { "internalType": "uint256", "name": "projectCount", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "internalType": "uint256", "name": "identityCommitment", "type": "uint256" }, { "internalType": "uint256[]", "name": "proofSiblings", "type": "uint256[]" }, { "internalType": "uint8[]", "name": "proofPathIndices", "type": "uint8[]" } ], "name": "removeMember", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "idCommitment", "type": "uint256" }, { "internalType": "string", "name": "lensProfile", "type": "string" } ], "name": "setLensConnect", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "groupId", "type": "uint256" }, { "internalType": "uint256", "name": "fromIdCommitment", "type": "uint256" }, { "internalType": "uint256", "name": "toIdCommitment", "type": "uint256" }, { "internalType": "string", "name": "reviewContent", "type": "string" }, { "internalType": "uint256[8]", "name": "proof", "type": "uint256[8]" } ], "name": "submitReviews", "outputs": [], "stateMutability": "nonpayable", "type": "function" } ];
-  const lenkedin_SC = new ethers.Contract(address, abi, relayer);
+  const lenkedin_SC = new ethers.Contract(address, PROJECT_FACTORY_ABI, relayer);
 
   // create project(group) on SC
   try {
@@ -82,6 +83,7 @@ export const create_project = async (
 
   // get group_id from contract
   const group_id = await lenkedin_SC.getProjectCount() -1 ;
+  console.log("gourp_id created:",group_id);
 
   // return result and group_id
     return {
