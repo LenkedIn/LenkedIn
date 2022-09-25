@@ -37,7 +37,7 @@ function getNetworks(): NetworksUserConfig {
     polygonMumbai: {
       url: `https://polygon-mumbai.infura.io/v3/${infuraApiKey}`,
       chainId: 80001,
-      accounts: [`0x${process.env.PROJECT_PK}`]
+      accounts: [`0x${process.env.PROJECT_PK}`],
     },
   }
 }
@@ -62,9 +62,9 @@ const hardhatConfig: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      polygonMumbai: `${process.env.POLYGONSCAN_API_KEY}`
-    }
-  }
+      polygonMumbai: `${process.env.POLYGONSCAN_API_KEY}`,
+    },
+  },
 }
 
 export default hardhatConfig

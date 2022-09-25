@@ -1,4 +1,4 @@
-import { poseidon_gencontract as poseidonContract } from "circomlibjs";
+import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { ethers } from "hardhat"
 
 async function main() {
@@ -15,25 +15,27 @@ async function main() {
   console.log(`PoseidonT3 library has been deployed to: ${poseidonT3Lib.address}`)
 
   const IncrementalBinaryTreeLibFactory = await ethers.getContractFactory("IncrementalBinaryTree", {
-      libraries: {
-          PoseidonT3: poseidonT3Lib.address
-      }
+    libraries: {
+      PoseidonT3: poseidonT3Lib.address,
+    },
   })
   const incrementalBinaryTreeLib = await IncrementalBinaryTreeLibFactory.deploy()
 
   await incrementalBinaryTreeLib.deployed()
 
-  console.log(`IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`)
+  console.log(
+    `IncrementalBinaryTree library has been deployed to: ${incrementalBinaryTreeLib.address}`
+  )
 
   const ProjectFactory = await ethers.getContractFactory("ProjectFactory", {
     libraries: {
-      IncrementalBinaryTree: incrementalBinaryTreeLib.address
+      IncrementalBinaryTree: incrementalBinaryTreeLib.address,
     },
   })
 
-  const projectFactory = await ProjectFactory.deploy();
-  await projectFactory.deployed();
-  console.log(`ProjectFactory deployed to ${projectFactory.address}`);
+  const projectFactory = await ProjectFactory.deploy()
+  await projectFactory.deployed()
+  console.log(`ProjectFactory deployed to ${projectFactory.address}`)
 
   /**
   const Verifier16 = await ethers.getContractFactory("Verifier16")
