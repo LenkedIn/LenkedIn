@@ -8,6 +8,7 @@ library DataTypes {
         string lensProfile;
         EnumerableSet.UintSet ongoingProject;
         EnumerableSet.UintSet finishedProject;
+        mapping(uint256 => string[]) reviewRecords;
     }
 
     struct Project {
@@ -17,7 +18,6 @@ library DataTypes {
         string githubRepository;
         string projectImageLink;
         string projectDescription;
-        EnumerableSet.UintSet members;
         EnumerableSet.UintSet reviewRecords;
     }
 }

@@ -3,6 +3,7 @@ pragma solidity 0.8.4;
 
 import {DataTypes} from "./libraries/DataTypes.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@zk-kit/incremental-merkle-tree.sol/IncrementalBinaryTree.sol";
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 import "@semaphore-protocol/contracts/interfaces/IVerifier.sol";
 import "@semaphore-protocol/contracts/base/SemaphoreCore.sol";
@@ -15,7 +16,7 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     
     using EnumerableSet for EnumerableSet.UintSet;
 
-    address internal constant verifier = address(0);
+    address internal constant verifier = address(0xB0985E6DEb9034b3A5B81eF367ccC8FF448EaaC4);
     uint8 internal constant MAX_DEPTH = 32;
 
     uint256 internal _projectCount;
@@ -47,7 +48,6 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
         _addMember(_projectCount, identityCommitment);
         DataTypes.Project storage newProject = projectInfo[_projectCount];
         newProject.startTime = block.timestamp;
-        projectInfo[_projectCount].members.add(identityCommitment);
         profileInfo[identityCommitment].ongoingProject.add(_projectCount);
         _projectCount++;
     }
@@ -60,7 +60,6 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     {
         _addMember(groupId, identityCommitment);
         profileInfo[identityCommitment].ongoingProject.add(groupId);
-        projectInfo[_projectCount].members.add(identityCommitment);
     }
 
     function removeMember(
@@ -73,7 +72,6 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
     {
         _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
         profileInfo[identityCommitment].ongoingProject.remove(groupId);
-        projectInfo[_projectCount].members.remove(identityCommitment);
     }
 
     function endProject(uint256 groupId) 
@@ -141,16 +139,16 @@ contract ProjectFactory is SemaphoreCore, SemaphoreGroups {
 
     function submitReviews(
         uint256 groupId,
-        uint256 fromIdCommitment,
         uint256 toIdCommitment,
+        uint256 nullifierHash,
         string calldata reviewContent,
         uint256[8] calldata proof
     ) 
         external
     {
         uint256 merkleTreeRoot = getMerkleTreeRoot(groupId);
-        uint256 nullifierHash = uint256(keccak256(abi.encodePacked(fromIdCommitment, toIdCommitment)));
         bytes32 signal = keccak256(abi.encodePacked(reviewContent));
+        profileInfo[toIdCommitment].reviewRecords[groupId].push(reviewContent);
         _verifyProof(signal, merkleTreeRoot, nullifierHash, groupId, proof, IVerifier(verifier));
         projectInfo[groupId].reviewRecords.add(nullifierHash);
     }
