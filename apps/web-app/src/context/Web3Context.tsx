@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from "react"
-import { getDefaultProfile, getProfilesByAddress } from "../api/lens"
+import { getProfilesByAddress } from "../api/lens"
 
 interface web3ContextInterface {
   web3Info: {

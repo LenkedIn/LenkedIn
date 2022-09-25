@@ -1,2 +1,2 @@
 declare module "uuid"
-declare module 'omit-deep'
+declare module "omit-deep"

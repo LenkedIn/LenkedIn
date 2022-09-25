@@ -11,8 +11,8 @@ import { ethers } from "ethers"
 import { CONTRACT_ADDRESSES, LOCAL_STORAGE_KEY } from "../../constant"
 import { profileFormInterface } from "../../pages/CreateProfile"
 import { formDataToMeta, uploadProfileToIpfs } from "../ipfs"
-import PERIPHERY from '../../abi/lensperiphery.json'
-import omitDeep from 'omit-deep'
+import PERIPHERY from "../../abi/lensperiphery.json"
+import omitDeep from "omit-deep"
 
 const APIURL = "https://api-mumbai.lens.dev/"
 
@@ -178,29 +178,32 @@ export const updateProfile = async (prevProfile: any, formData: any) => {
   })
   const typedData = result.data.createSetProfileMetadataTypedData.typedData
   const signature = await signer._signTypedData(
-    omitDeep(typedData.domain, '__typename'),
-    omitDeep(typedData.types, '__typename'),
-    omitDeep(typedData.value, '__typename')
+    omitDeep(typedData.domain, "__typename"),
+    omitDeep(typedData.types, "__typename"),
+    omitDeep(typedData.value, "__typename")
   )
-  const {v,r,s} = ethers.utils.splitSignature(signature)
+  const { v, r, s } = ethers.utils.splitSignature(signature)
   const lensPeripheryContract = new ethers.Contract(
     CONTRACT_ADDRESSES.LENS_PERIPHERY,
     PERIPHERY,
     signer
   )
-  try{
-    const tx = await lensPeripheryContract.setProfileMetadataURIWithSig({
-      profileId: prevProfile.id,
-      metadata: ipfsLink,
-      sig:{
-        v,
-        r,
-        s,
-        deadline: typedData.value.deadline
-      }
-    }, {gasLimit: 500000})
-    console.log('tx: ', tx)
-  }catch(err){
+  try {
+    const tx = await lensPeripheryContract.setProfileMetadataURIWithSig(
+      {
+        profileId: prevProfile.id,
+        metadata: ipfsLink,
+        sig: {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        },
+      },
+      { gasLimit: 500000 }
+    )
+    console.log("tx: ", tx)
+  } catch (err) {
     console.log(err)
   }
 }
