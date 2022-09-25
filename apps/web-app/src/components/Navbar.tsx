@@ -39,8 +39,14 @@ const isCurrentPage = (path: string): string => {
   return String(window.location).includes(path) ? "current-page" : ""
 }
 
+const getWalletButtonText = (web3Info: any, pending: boolean) => {
+  if (pending) return "pending"
+  if (web3Info?.account) return web3Info.account.substr(0, 10) + "..."
+  return "connect wallet"
+}
+
 const Navbar = () => {
-  const { connectWallet, web3Info } = useWeb3()
+  const { connectWallet, web3Info, pending } = useWeb3()
   return (
     <NavbarContainer>
       <Logo>
@@ -67,7 +73,7 @@ const Navbar = () => {
         </li>
         <li>
           <Button bgColor="--primary-green-lofi" textColor="black" onClick={() => connectWallet()}>
-            {web3Info?.account ? web3Info.account.substr(0, 10) + "..." : "Connect Wallet"}
+            {getWalletButtonText(web3Info, pending)}
           </Button>
         </li>
       </ul>

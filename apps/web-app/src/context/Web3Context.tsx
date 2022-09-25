@@ -1,18 +1,27 @@
 import React, { createContext, ReactNode, useContext, useState } from "react"
+import { getProfilesByAddress } from "../api/lens"
 
 interface web3ContextInterface {
   web3Info: {
     metaMaskInstalled: boolean
     account: string | undefined
   } | null
+  profileInfo: any
+  pending: boolean
   updateWeb3Info: Function
   connectWallet: Function
+  checkConnection: Function
+  setPending: Function
 }
 
 const Web3Context = createContext<web3ContextInterface>({
   web3Info: null,
+  profileInfo: null,
+  pending: false,
   updateWeb3Info: () => {},
   connectWallet: () => {},
+  checkConnection: () => {},
+  setPending: () => {},
 })
 
 const useWeb3 = () => useContext(Web3Context)
@@ -22,6 +31,10 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
     metaMaskInstalled: window.ethereum ? true : false,
     account: "",
   })
+
+  const [profileInfo, setProfileInfo] = useState<any>({})
+
+  const [pending, setPending] = useState<boolean>(false)
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -34,6 +47,10 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
           metaMaskInstalled: true,
           account: accounts?.[0 as keyof typeof accounts],
         })
+        //const profile = await getDefaultProfile(accounts?.[0 as keyof typeof accounts])
+        const profiles = await getProfilesByAddress(accounts as Array<string>)
+        // if account not created, profile will be empty array
+        setProfileInfo(profiles[0]?.profile)
       } catch (error) {
         console.log(error)
         window.alert("Metamask Error, details in console.")
@@ -51,12 +68,20 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const checkConnection = async () => {
+    //todo: check chainID
+  }
+
   return (
     <Web3Context.Provider
       value={{
         web3Info,
+        profileInfo,
+        pending,
         updateWeb3Info: (props: object) => setWeb3Info({ ...web3Info, ...props }),
         connectWallet,
+        checkConnection,
+        setPending,
       }}
     >
       {children}
