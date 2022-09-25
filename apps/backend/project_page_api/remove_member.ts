@@ -1,3 +1,5 @@
+// Skipping this functionality for now.
+
 "use strict"
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 import { DynamoDB } from "aws-sdk"

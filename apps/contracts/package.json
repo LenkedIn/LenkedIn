@@ -6,6 +6,7 @@
   "scripts": {
     "start": "hardhat node & yarn compile && yarn deploy --network localhost",
     "deploy": "hardhat run scripts/deploy.ts",
+    "deploy:events": "hardhat deploy:events",
     "compile": "hardhat compile",
     "test": "hardhat test",
     "test:report-gas": "REPORT_GAS=true hardhat test",
@@ -26,12 +27,16 @@
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@openzeppelin/contracts": "^4.7.3",
     "@openzeppelin/test-helpers": "^0.5.16",
+    "@semaphore-protocol/group": "^2.2.0",
+    "@semaphore-protocol/identity": "^2.0.0",
+    "@semaphore-protocol/proof": "^2.3.1",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.16",
     "chai": "^4.3.6",
+    "circomlibjs": "0.0.8",
     "dotenv": "^16.0.2",
     "ethers": "^5.7.0",
     "hardhat": "^2.11.1",
@@ -45,7 +50,26 @@
   },
   "config": {
     "solidity": {
-      "version": "0.8.9"
+      "compilers": [
+        {
+          "version": "0.8.4",
+          "settings": {
+          "optimizer": {
+              "enabled": true,
+              "runs": 3000
+            }
+          }
+        },
+        {
+          "version": "0.4.11",
+          "settings": {
+          "optimizer": {
+              "enabled": true,
+              "runs": 3000
+            }
+          }
+        }
+      ]
     },
     "paths": {
       "contracts": "./contracts",
@@ -56,5 +80,8 @@
         "typechain": "./build/typechain"
       }
     }
+  },
+  "dependencies": {
+    "@semaphore-protocol/contracts": "^2.2.0"
   }
 }

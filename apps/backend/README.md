@@ -30,8 +30,8 @@ serverless config credentials \
 
 - invoke function locally
 
-`serverless invoke local --function {function_name}`
+  `$ serverless invoke local --function {function_name}`
 
 - deploy to AWS(cloudformationm dynamoDB and functions)
 
-`serverless`
+  `$ serverless`
