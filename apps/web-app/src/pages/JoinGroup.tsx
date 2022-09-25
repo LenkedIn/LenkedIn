@@ -38,8 +38,7 @@ const JoinGroup = () => {
         initialValues={JoinGroupFormSchema.getDefault()}
         validationSchema={JoinGroupFormSchema}
         onSubmit={async (values, actions) => {
-          console.log(values)
-          //await generateIdCommitment(values.groupId)
+          await generateIdCommitment(values.groupId)
           actions.setSubmitting(false)
         }}
       >

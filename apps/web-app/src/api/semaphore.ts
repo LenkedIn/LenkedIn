@@ -10,7 +10,8 @@ export const generateIdCommitment = async (groupId: string) => {
   const signature = await signer.signMessage(
     `create id for group with Id ${groupId} at time ${timeStamp}`
   )
-  const identity = new Identity(signature)
+  // Unable to use @semaphore-protocol/identity, getting dev errors from browser
+  /*const identity = new Identity(signature)
   localStorage.setItem(LOCAL_STORAGE_KEY.SEMAPHORE_TRAPDOOR, JSON.stringify(identity.getTrapdoor()))
   localStorage.setItem(
     LOCAL_STORAGE_KEY.SEMAPHORE_NULLIFIER,
@@ -19,5 +20,5 @@ export const generateIdCommitment = async (groupId: string) => {
   localStorage.setItem(
     LOCAL_STORAGE_KEY.SEMAPHORE_COMMITMENT,
     JSON.stringify(identity.generateCommitment())
-  )
+  )*/
 }
