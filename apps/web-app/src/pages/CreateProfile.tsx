@@ -56,7 +56,7 @@ const loadLENSProfile = () => {
 }
 
 export const CreateProfile = () => {
-  const { web3Info, profileInfo } = useWeb3()
+  const { web3Info, profileInfo, setPending } = useWeb3()
   const [prevProfile, setPrevProfile] = useState<any>()
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const CreateProfile = () => {
           if (!profileInfo) {
             await createProfile(values)
           } else {
-            await updateProfile(profileInfo, values)
+            await updateProfile(profileInfo, values, setPending)
           }
         }}
       >

@@ -15,7 +15,6 @@ const client = create({
 })
 
 export const formDataToMeta = (prevProfile: any, formData: any) => {
-  console.log(formData)
   const metaData = {
     ...prevProfile,
     name: formData.name,
@@ -26,7 +25,6 @@ export const formDataToMeta = (prevProfile: any, formData: any) => {
     createOn: new Date().toISOString(),
     appId: "LenkedIn",
   }
-  console.log(metaData)
   return metaData
 }
 

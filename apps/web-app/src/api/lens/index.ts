@@ -60,7 +60,6 @@ export const refreshAuth = async (refreshToken: string) => {
     },
   })
   const tokens = response?.data?.refresh
-  console.log("refresh credential", tokens.accessToken, tokens.refreshToken)
   localStorage.setItem(LOCAL_STORAGE_KEY.LENS_ACCESS_TOKEN, tokens.accessToken)
   localStorage.setItem(LOCAL_STORAGE_KEY.LENS_REFRESH_TOKEN, tokens.refreshToken)
 }
@@ -91,8 +90,6 @@ export const getAuthenticatedClient = async () => {
 
   await refreshAuth(localStorage.getItem(LOCAL_STORAGE_KEY.LENS_REFRESH_TOKEN) as string)
 
-  console.log(`Bearer ${localStorage.getItem(LOCAL_STORAGE_KEY.LENS_ACCESS_TOKEN)}`)
-
   const authenticatedClient = new ApolloClient({
     uri: APIURL,
     cache: new InMemoryCache(),
@@ -105,11 +102,8 @@ export const getAuthenticatedClient = async () => {
 
 export const createProfile = async (form: profileFormInterface) => {
   try {
-    console.log("getting authenticated client...")
     const authenticatedClient = await getAuthenticatedClient()
-    console.log("creating profile...")
-    console.log("form data", form)
-    const result = await authenticatedClient.mutate({
+    await authenticatedClient.mutate({
       mutation: gql(CREATE_PROFILE),
       variables: {
         request: {
@@ -121,7 +115,7 @@ export const createProfile = async (form: profileFormInterface) => {
         },
       },
     })
-    console.log(result)
+    alert("profile created")
   } catch (error) {
     console.log(error)
   }
@@ -129,7 +123,6 @@ export const createProfile = async (form: profileFormInterface) => {
 
 export const getDefaultProfile = async (ethereumAddress: string | undefined) => {
   try {
-    console.log("getting info of", ethereumAddress)
     const result = await apolloClient.query({
       query: gql(GET_DEFAULT_PROFILES),
       variables: {
@@ -163,7 +156,7 @@ export const getProfilesByAddress = async (ethereumAddressList: Array<string> | 
   }
 }
 
-export const updateProfile = async (prevProfile: any, formData: any) => {
+export const updateProfile = async (prevProfile: any, formData: any, setPending: Function) => {
   const metaData = formDataToMeta(prevProfile, formData)
   const ipfsLink = await uploadProfileToIpfs(metaData)
   const authenticatedClient = await getAuthenticatedClient()
@@ -189,6 +182,7 @@ export const updateProfile = async (prevProfile: any, formData: any) => {
     signer
   )
   try {
+    setPending(true)
     const tx = await lensPeripheryContract.setProfileMetadataURIWithSig(
       {
         profileId: prevProfile.id,
@@ -202,7 +196,11 @@ export const updateProfile = async (prevProfile: any, formData: any) => {
       },
       { gasLimit: 500000 }
     )
-    console.log("tx: ", tx)
+    const receipt = await tx.wait()
+    setPending(false)
+    if (receipt.status !== 1) {
+      alert("transaction error")
+    }
   } catch (err) {
     console.log(err)
   }

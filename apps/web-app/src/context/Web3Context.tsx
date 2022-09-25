@@ -7,17 +7,21 @@ interface web3ContextInterface {
     account: string | undefined
   } | null
   profileInfo: any
+  pending: boolean
   updateWeb3Info: Function
   connectWallet: Function
   checkConnection: Function
+  setPending: Function
 }
 
 const Web3Context = createContext<web3ContextInterface>({
   web3Info: null,
   profileInfo: null,
+  pending: false,
   updateWeb3Info: () => {},
   connectWallet: () => {},
   checkConnection: () => {},
+  setPending: () => {},
 })
 
 const useWeb3 = () => useContext(Web3Context)
@@ -29,6 +33,8 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
   })
 
   const [profileInfo, setProfileInfo] = useState<any>({})
+
+  const [pending, setPending] = useState<boolean>(false)
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -71,9 +77,11 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         web3Info,
         profileInfo,
+        pending,
         updateWeb3Info: (props: object) => setWeb3Info({ ...web3Info, ...props }),
         connectWallet,
         checkConnection,
+        setPending,
       }}
     >
       {children}
