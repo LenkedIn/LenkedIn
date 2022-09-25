@@ -1,9 +1,9 @@
 "use strict"
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 import { DynamoDB } from "aws-sdk"
-import { Identity } from "@semaphore-protocol/identity"
-import { Group } from "@semaphore-protocol/group"
-import { generateProof } from "@semaphore-protocol/proof"
+// import { Identity } from "@semaphore-protocol/identity"
+// import { Group } from "@semaphore-protocol/group"
+// import { generateProof } from "@semaphore-protocol/proof"
 import { ethers } from "ethers"
 import {v4 as uuidv4} from 'uuid';
 import PROJECT_FACTORY_ABI from "../abi/project_factory.json"
