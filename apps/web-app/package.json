@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@metamask/providers": "^9.1.0",
+    "@semaphore-protocol/identity": "^2.5.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -13,15 +14,20 @@
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/uuid": "^8.3.4",
+    "assert": "^2.0.0",
     "ethers": "^5.7.1",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "ipfs-http-client": "^58.0.1",
     "omit-deep": "^0.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "os-browserify": "^0.3.0",
+    "patch-package": "^6.4.7",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "stream": "^0.0.2",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.5",
     "typescript": "^4.8.3",
     "uuid": "^9.0.0",
@@ -32,7 +38,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [

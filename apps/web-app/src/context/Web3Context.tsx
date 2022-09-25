@@ -1,10 +1,12 @@
 import React, { createContext, ReactNode, useContext, useState } from "react"
+import { ethers } from "ethers"
 import { getProfilesByAddress } from "../api/lens"
 
 interface web3ContextInterface {
   web3Info: {
     metaMaskInstalled: boolean
     account: string | undefined
+    provider: any
   } | null
   profileInfo: any
   pending: boolean
@@ -30,6 +32,7 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
   const [web3Info, setWeb3Info] = useState<any>({
     metaMaskInstalled: window.ethereum ? true : false,
     account: "",
+    provider: undefined,
   })
 
   const [profileInfo, setProfileInfo] = useState<any>({})
@@ -46,6 +49,7 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
           ...web3Info,
           metaMaskInstalled: true,
           account: accounts?.[0 as keyof typeof accounts],
+          provider: new ethers.providers.Web3Provider(window?.ethereum as any),
         })
         //const profile = await getDefaultProfile(accounts?.[0 as keyof typeof accounts])
         const profiles = await getProfilesByAddress(accounts as Array<string>)

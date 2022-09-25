@@ -56,6 +56,11 @@ const Navbar = () => {
       </Logo>
       <ul>
         <li>
+          <NavLink to={{ pathname: "/join-project" }} className={isCurrentPage("/join-project")}>
+            Join Project
+          </NavLink>
+        </li>
+        <li>
           <NavLink
             to={{ pathname: "/create-project" }}
             className={isCurrentPage("/create-project")}
