@@ -14,7 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "stream": ["./node_modules/stream-browserify"]
+    },
+    "resolve": {
+      "fallback": {
+        "stream": false
+      }
+    }
   },
   "include": ["src"]
 }

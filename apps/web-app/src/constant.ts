@@ -1,6 +1,9 @@
 export const LOCAL_STORAGE_KEY = {
   LENS_ACCESS_TOKEN: "lensAccessToken",
   LENS_REFRESH_TOKEN: "lensRefreshToken",
+  SEMAPHORE_TRAPDOOR: "semaphoreTrapDoor",
+  SEMAPHORE_NULLIFIER: "semaphoreNullifier",
+  SEMAPHORE_COMMITMENT: "semaphoreCommitment",
 }
 
 export const IPFS_INFURA_ID = process.env.REACT_APP_IPFS_INFURA_ID
