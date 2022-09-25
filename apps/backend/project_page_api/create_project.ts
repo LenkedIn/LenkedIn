@@ -86,17 +86,17 @@ export const create_project = async (
   console.log("gourp_id created:",group_id);
 
   // return result and group_id
-    return {
-      statusCode: 200,
-      body: JSON.stringify(
-        {
-          tx_status : "Project created",
-          group_id: group_id,
-        },
-        null,
-        2
-      ),
-    }
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      {
+        tx_status : "Project created",
+        group_id: group_id,
+      },
+      null,
+      2
+    ),
+  }
 
 
 
