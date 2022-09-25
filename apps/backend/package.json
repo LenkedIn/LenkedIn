@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/aws-sdk": "0.0.42",
     "@types/node": "^18.7.18",
+    "@types/aws-lambda": "^8.10.104",
     "serverless-dotenv-plugin": "^4.0.2",
     "serverless-plugin-typescript": "^2.1.2",
     "tslint": "^5.5.0",
