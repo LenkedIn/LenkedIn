@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from "react"
-import { getDefaultProfile } from "../api/lens"
+import { getDefaultProfile, getProfilesByAddress } from "../api/lens"
 
 interface web3ContextInterface {
   web3Info: {
@@ -41,8 +41,10 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
           metaMaskInstalled: true,
           account: accounts?.[0 as keyof typeof accounts],
         })
-        const profile = await getDefaultProfile(accounts?.[0 as keyof typeof accounts])
-        console.log(profile)
+        //const profile = await getDefaultProfile(accounts?.[0 as keyof typeof accounts])
+        const profiles = await getProfilesByAddress(accounts as Array<string>)
+        // if account not created, profile will be empty array
+        setProfileInfo(profiles[0]?.profile)
       } catch (error) {
         console.log(error)
         window.alert("Metamask Error, details in console.")

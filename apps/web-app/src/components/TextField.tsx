@@ -16,6 +16,8 @@ export const Label = styled.label`
 
 const StyledField = styled(FField)`
   border: var(--primary-green-lofi) solid 1px;
+  font-size: 14px;
+  font-family: "TitilliumWebSemiNormal";
   padding: 15px 10px;
   border-radius: 5px;
   &:focus {

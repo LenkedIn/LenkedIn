@@ -1,11 +1,11 @@
 import styled from "styled-components"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useWeb3 } from "../context/Web3Context"
 import Button from "../components/Button"
 import { Formik, Form } from "formik"
 import TextField from "../components/TextField"
 import * as Yup from "yup"
-import { createProfile } from "../api/lens"
+import { createProfile, updateProfile } from "../api/lens"
 
 const PageContainer = styled.div`
   display: flex;
@@ -56,25 +56,44 @@ const loadLENSProfile = () => {
 }
 
 export const CreateProfile = () => {
-  const { web3Info } = useWeb3()
+  const { web3Info, profileInfo } = useWeb3()
+  const [prevProfile, setPrevProfile] = useState<any>()
 
   useEffect(() => {
     if (web3Info && !web3Info.account) {
       window.alert("Please connect wallet to continue.")
     }
+    if (profileInfo) {
+      setPrevProfile({
+        name: profileInfo.handle,
+        gitHandle: "",
+        discord: "",
+        twitter: "",
+        profileIconLink: "",
+        introduction: profileInfo.bio || "",
+        skillSet: "",
+        backGround: "",
+        purpose: "",
+      })
+    }
     // To prevent unnecessary eslint check
     // eslint-disable-next-line
-  }, [web3Info])
+  }, [web3Info, profileInfo])
 
   return (
     <PageContainer>
       <h1>Create Profile</h1>
       <Formik
-        initialValues={ProfileFormSchema.getDefault()}
+        enableReinitialize
+        initialValues={prevProfile || ProfileFormSchema.getDefault()}
         validationSchema={ProfileFormSchema}
         onSubmit={async (values, actions) => {
           actions.setSubmitting(false)
-          await createProfile(values)
+          if (!profileInfo) {
+            await createProfile(values)
+          } else {
+            await updateProfile(profileInfo, values)
+          }
         }}
       >
         {props => (

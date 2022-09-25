@@ -29,3 +29,32 @@ export const REFRESH_AUTHENTICATION = `
     }
  }
 `
+
+export const CREATE_SET_PROFILE_TYPED_DATA = `
+mutation ($request:CreatePublicSetProfileMetadataURIRequest!) {
+    createSetProfileMetadataTypedData(request: $request) {
+      id
+        expiresAt
+        typedData {
+          types {
+            SetProfileMetadataURIWithSig {
+              name
+              type
+            }
+          }
+          domain {
+            name
+            chainId
+            version
+            verifyingContract
+          }
+          value {
+            nonce
+            deadline
+            profileId
+            metadata
+          }
+        }
+    }
+  }
+`
