@@ -4,7 +4,11 @@
     "module": "commonjs",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+<<<<<<< HEAD
     "allowSyntheticDefaultImports": true
+=======
+    "allowSyntheticDefaultImports": true,
+>>>>>>> main
   },
   "exclude": ["node_modules"],
   "types": ["node", "aws-sdk"]

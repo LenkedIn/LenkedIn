@@ -4,6 +4,7 @@ const FooterContainer = styled.div`
   display: flex;
   width: 100%;
   place-content: space-between;
+  align-items: center;
   position: abosolute;
   bottom: 0;
 `

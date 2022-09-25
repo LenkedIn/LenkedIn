@@ -2,8 +2,9 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import GlobalStyle from "./GlobalStyle"
-import CreateProfile from "./pages/CreateProfile"
+import { CreateProfile } from "./pages/CreateProfile"
 import CreateProject from "./pages/CreateProject"
+import JoinGroup from "./pages/JoinGroup"
 import Navbar from "./components/Navbar"
 import Landing from "./pages/Landing"
 import Footer from "./components/Footer"
@@ -42,6 +43,16 @@ root.render(
               <>
                 <Navbar />
                 <CreateProject />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/join-project"
+            element={
+              <>
+                <Navbar />
+                <JoinGroup />
                 <Footer />
               </>
             }
