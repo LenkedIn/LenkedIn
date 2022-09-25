@@ -32,6 +32,6 @@ export const formDataToMeta = (prevProfile: any, formData: any) => {
 
 export const uploadProfileToIpfs = async (metaData: any) => {
   const added = await client.add(JSON.stringify(metaData))
-  const URI = `https://ipfs.infura.io/ipfs/${added.path}`
+  const URI = `ipfs://${added.path}`
   return URI
 }
