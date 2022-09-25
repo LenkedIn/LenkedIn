@@ -1,5 +1,4 @@
 import "@nomicfoundation/hardhat-toolbox"
-//import "hardhat-dependency-compiler";
 import { config as dotenvConfig } from "dotenv"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
@@ -35,6 +34,11 @@ function getNetworks(): NetworksUserConfig {
       chainId: 42161,
       accounts,
     },
+    polygonMumbai: {
+      url: `https://polygon-mumbai.infura.io/v3/${infuraApiKey}`,
+      chainId: 80001,
+      accounts: [`0x${process.env.PROJECT_PK}`]
+    },
   }
 }
 
@@ -46,9 +50,6 @@ const hardhatConfig: HardhatUserConfig = {
     cache: config.paths.cache,
     artifacts: config.paths.build.contracts,
   },
-  /*dependencyCompiler: {
-      paths: ["@semaphore-protocol/contracts/verifiers/Verifier20.sol"]
-  },*/
   networks: {
     hardhat: {
       chainId: 1337,
@@ -59,6 +60,11 @@ const hardhatConfig: HardhatUserConfig = {
     outDir: config.paths.build.typechain,
     target: "ethers-v5",
   },
+  etherscan: {
+    apiKey: {
+      polygonMumbai: `${process.env.POLYGONSCAN_API_KEY}`
+    }
+  }
 }
 
 export default hardhatConfig
